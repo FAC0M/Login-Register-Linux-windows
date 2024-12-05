@@ -1,6 +1,9 @@
-#include <iostream> 
-#include <unistd.h>//Use Delay
-#include <fstream>
+/*
+    App Cross Platform Linux, Windows(x86-x64)
+*/
+#include<iostream> 
+#include<unistd.h>//Use Delay
+#include<fstream>
 //#include <cstdlib>
 /*#include <cppconn/driver.h>
 #include <cppconn/exception.h>
@@ -108,8 +111,10 @@ void Menu::MainMenu(){
     ForgotPassword MyForgotPassword;
 #if defined(_WIN32)
     system("cls"); //Only for windows
-#endif
+#elif defined(__linux__)
     cout<< u8"\033[2J\033[1;1H"; //Only for linux
+#endif
+
     cout << "\t\t\t*****************************************\n";
     cout << "\t\t\t              Login System               \n";
     cout << "\t\t\t*****************************************\n";
@@ -130,13 +135,17 @@ void Menu::MainMenu(){
     else{
 #if defined(_WIN32)
         system("cls"); //Only for windows
-#endif
+#elif defined(__linux__)
         cout<< u8"\033[2J\033[1;1H"; //Only for linux
+#endif
+
         cout<< "\n\t\t\t Please enter your choice again! \n";
 #if defined(_WIN32)
-        sleep(3000); //Only for windows
-#endif
+        sleep(3); //Only for windows
+#elif defined(__linux__)
         usleep(3000000); //Microsec
+#endif
+
         MainMenu();
     }
 }
@@ -146,14 +155,17 @@ int Login::UserLogin(){
     string pass;
     int count = 0;
 #if defined(_WIN32)
-        system("cls"); //Only for windows
-#endif
+    system("cls"); //Only for windows
+#elif defined(__linux__)
     cout<< u8"\033[2J\033[1;1H"; //Only for linux
+#endif
+    
     cout << "\t\t\t Enter the username : ";
     cin >> User;
     cout << "\t\t\t Enter the password : ";
     cin >> Password;
-    ifstream inputFile("/home/facom/develop/kernel/heaven_os/records.txt",ios::in);
+    ifstream inputFile("records.txt",ios::in);
+    //ifstream inputFile("/home/facom/develop/kernel/heaven_os/records.txt",ios::in);
     while (inputFile >> id >> pass){
         if (id == User && pass == Password){
             count = 1;
@@ -167,17 +179,21 @@ int Login::UserLogin(){
     if (count == 1){
         cout << "\n\t\t\t Your login is successfull \n";
 #if defined(_WIN32)
-        sleep(3000); //Only for windows
-#endif
+        sleep(3); //Only for windows
+#elif defined(__linux__)
         usleep(3000000); //Microsec
+#endif
+
         main();
     }
     else{
         cout << "\n\t\t\t\t Login error! \n \t\t\tPlease check your username and password\n";
 #if defined(_WIN32)
-        sleep(3000); //Only for windows
-#endif
+        sleep(3); //Only for windows
+#elif defined(__linux__)
         usleep(3000000); //Microsec
+#endif
+        
         main();
     }
     //main();
@@ -185,34 +201,43 @@ int Login::UserLogin(){
 
 int Register::UserRegister(){
 #if defined(_WIN32)
-        system("cls"); //Only for windows
-#endif
+    system("cls"); //Only for windows
+#elif defined(__linux__)
     cout<< u8"\033[2J\033[1;1H"; //Only for linux
+#endif
+
     cout << "\t\t\t Enter the username : ";
     cin >> RegisUserId;
     cout << "\t\t\t Enter the password : ";
     cin >> RegisUserPassWord;
 
-    ofstream OutputFile("/home/facom/develop/kernel/heaven_os/records.txt",ios::app);
+    //ofstream OutputFile("/home/facom/develop/kernel/heaven_os/records.txt",ios::app);
+    ofstream OutputFile("records.txt",ios::app);
     OutputFile << RegisUserId << " " << RegisUserPassWord << endl;
     OutputFile.close();
 #if defined(_WIN32)
-        system("cls"); //Only for windows
-#endif
+    system("cls"); //Only for windows
+#elif defined(__linux__)
     cout<< u8"\033[2J\033[1;1H"; //Only for linux
+#endif
+
     cout << "\n\t\t\t Registrationis succesfull! \n";
 #if defined(_WIN32)
-        sleep(3000); //Only for windows
-#endif
+    sleep(3); //Only for windows
+#elif defined(__linux__)
     usleep(3000000); //Microsec
+#endif
+
     main();
 }
 
 void ForgotPassword::UserForgotPassword(){
 #if defined(_WIN32)
-        system("cls"); //Only for windows
-#endif
+     system("cls"); //Only for windows
+#elif defined(__linux__)
     cout<< u8"\033[2J\033[1;1H"; //Only for linux
+#endif
+
     cout << "\n\t\t\t Press 1 to search your id by username \n";
     cout << "\n\t\t\t Press 2 back to the main menu \n";
     cout << "\n\t\t\t Enter your choice : ";
@@ -221,11 +246,14 @@ void ForgotPassword::UserForgotPassword(){
         int count = 0;
 #if defined(_WIN32)
         system("cls"); //Only for windows
-#endif
+#elif defined(__linux__)
         cout<< u8"\033[2J\033[1;1H"; //Only for linux
+#endif
+
         cout << "\n\t\t\t Enter the username which you remembered : ";
         cin >> suserId;
-        ifstream f1("/home/facom/develop/kernel/heaven_os/records.txt",ios::in);
+        ifstream f1("records.txt",ios::in);
+        //ifstream f1("/home/facom/develop/kernel/heaven_os/records.txt",ios::in);
         while (f1 >> sId >> spass){
             if (sId == suserId){
                 count = 1;
@@ -236,21 +264,26 @@ void ForgotPassword::UserForgotPassword(){
             cout << "\n\t\t\t Your account is found \n";
             cout << "\n\t\t\t Your password is : " << spass << endl;
 #if defined(_WIN32)
-            sleep(3000); //Only for windows
-#endif
+            sleep(3); //Only for windows
+#elif defined(__linux__)
             usleep(10000000); //Microsec
+#endif
+
             main();
         }
         else{
 #if defined(_WIN32)
             system("cls"); 
 #endif
+
             cout<< u8"\033[2J\033[1;1H"; //Only for linux
             cout << "\n\t\t\t Your account is not found! \n";
 #if defined(_WIN32)
-            sleep(3000); 
-#endif
+            sleep(3); 
+#elif defined(__linux__)
             usleep(3000000); //Microsec
+
+#endif
             main();
         }
     }
@@ -260,13 +293,16 @@ void ForgotPassword::UserForgotPassword(){
     else{
 #if defined(_WIN32)
         system("cls"); 
-#endif
+#elif defined(__linux__)
         cout<< u8"\033[2J\033[1;1H"; //Only for linux
+#endif
+
         cout << "\n\t\t\t Please enter your choice again! " << endl;
 #if defined(_WIN32)
-         sleep(3000); 
-#endif
+        sleep(10); 
+#elif defined(__linux__)
         usleep(1000000); //Microsec
+#endif
         UserForgotPassword();
     }
     main();
